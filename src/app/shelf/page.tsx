@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Shelfs from "@/components/Shelf";
 
 export const metadata: Metadata = {

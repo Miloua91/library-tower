@@ -19,7 +19,7 @@ export default function Shelfs() {
     fetch(...args).then((res) => res.json());
   const { data, error, isLoading } = useSWR(`/api/user-shelf`, fetcher);
 
-  if (!isLoading)
+  if (isLoading)
     return (
       <div className="mx-2 md:mx-12 text-center">
         <Lottie className="m-auto h-80 w-80 mt-20" animationData={Loading} loop={true}/>
