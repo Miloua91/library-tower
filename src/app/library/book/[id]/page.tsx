@@ -73,7 +73,7 @@ export default async function Book({ params }: { params: { id: number } }) {
                 <label>Read</label>
               </Link>
             </div>
-            <AddBooks id={id} title={`${title}`} author={`${author.name}`}/>
+            <AddBooks id={id}/>
           </div>
           <hr className="my-2" />
           <p className="text-start lg:mt-10">{description}</p>
