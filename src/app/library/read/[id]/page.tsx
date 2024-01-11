@@ -5,7 +5,8 @@ import { ReactReader } from "react-reader";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
+import Lottie from "lottie-react";
+import Loading from "../../../../../public/loading.json";
 
 export default function Reader() {
   const searchParams = useSearchParams();
@@ -30,13 +31,18 @@ export default function Reader() {
   }, [data]);
 
   if (isLoading)
-  return (
-    <div className="mx-2 md:mx-12 text-center mt-[8em] text-3xl">
-      Loading...
-    </div>
-  );
+    return (
+      <div className="mx-2 md:mx-12 text-center">
+        <Lottie
+          className="m-auto h-80 w-80 mt-20"
+          animationData={Loading}
+          loop={true}
+        />
+        <div className="-mt-20 text-xl">Loading...</div>
+      </div>
+    );
 
-  if (!data || !Array.isArray(data.data) || data.data.length === 0)
+  if (data.data.length === 0)
     return (
       <div className="mx-2 md:mx-12 text-center mt-[8em] text-3xl">
         Book not found.
@@ -49,7 +55,6 @@ export default function Reader() {
         Can&apos;t load the book.
       </div>
     );
- 
 
   return (
     <div style={{ height: "100vh" }} className="mx-2 md:mx-12">

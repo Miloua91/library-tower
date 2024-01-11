@@ -15,7 +15,6 @@ interface Book {
 }
 
 export default function AddBooks({ id }: AddBooksProps) {
-
   const fetcher = (...args: [RequestInfo, RequestInit?]) =>
     fetch(...args).then((res) => res.json());
   const { data, error, isLoading, mutate } = useSWR(`/api/user-shelf`, fetcher);
@@ -73,6 +72,23 @@ export default function AddBooks({ id }: AddBooksProps) {
       </>
     );
 
+  if (!user)
+    return (
+      <>
+        <div className="flex flex-col items-center">
+          <Image
+            className="cursor-pointer"
+            src={"/shelf.svg"}
+            alt="Shelf"
+            width={32}
+            height={32}
+            priority
+          />
+          <label>Join</label>
+        </div>
+      </>
+    );
+
   if (data.data.map((book: Book) => book.book.id).includes(id))
     return (
       <>
@@ -93,22 +109,6 @@ export default function AddBooks({ id }: AddBooksProps) {
       </>
     );
 
-  if (!user)
-    return (
-      <>
-        <div className="flex flex-col items-center">
-          <Image
-            className="cursor-pointer"
-            src={"/shelf.svg"}
-            alt="Shelf"
-            width={32}
-            height={32}
-            priority
-          />
-          <label>Join</label>
-        </div>
-      </>
-    );
   if (user)
     return (
       <>
