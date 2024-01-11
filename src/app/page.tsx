@@ -11,7 +11,7 @@ export default function Home() {
           <div>
             <h2 className="text-xl lg:text-2xl">
               Discover and read a wide variety of public domain books across
-              different genres and topics. Whether you're interested in classic
+              different genres and topics. Whether you&apos;re interested in classic
               literature, philosophy, or nonefiction, our platform offer a
               wealth of reading material. Enjoy your exploration!
             </h2>

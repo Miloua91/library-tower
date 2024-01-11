@@ -46,7 +46,7 @@ export default function Reader() {
   if (error)
     return (
       <div className="mx-2 md:mx-12 text-center mt-[8em] text-3xl">
-        Can't load the book.
+        Can&apos;t load the book.
       </div>
     );
  

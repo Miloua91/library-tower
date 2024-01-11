@@ -84,7 +84,7 @@ export default function Header() {
 
   useEffect(() => {
     setBookworm(`${name}`);
-  }, [loggedIn, userId]);
+  }, [loggedIn, userId, name]);
 
   function Logout() {
     deleteCookie("id");
