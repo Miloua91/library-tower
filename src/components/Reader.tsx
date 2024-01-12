@@ -16,7 +16,7 @@ export default function Reader(bookTitle: Title) {
   );
 
   return (
-    <div style={{ height: "100vh" }} className="mx-2 md:mx-12">
+    <div style={{ height: "100vh" }} className="md:mx-12">
       <ReactReader
         url="https://izfdjscvmavogprtzufx.supabase.co/storage/v1/object/public/library/Metamorphosis_Kafka.epub"
         title={`${bookTitle.bookTitle}`}

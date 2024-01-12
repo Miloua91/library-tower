@@ -37,7 +37,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function Read({ searchParams }: { searchParams: { id: number } }) {
+export default async function Read({ searchParams }: { searchParams: { id: string } }) {
 
   let { data: book } = await supabase
   .from("books")
