@@ -2,7 +2,6 @@ import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "../../../../../database.types";
 import type { Metadata, ResolvingMetadata } from "next";
-import { setCookie, getCookie } from "cookies-next";
 import Link from "next/link";
 import AddBooks from "@/components/AddBook";
 
@@ -20,7 +19,6 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = params.id;
 
   let { data: book } = await supabase
     .from("books")
