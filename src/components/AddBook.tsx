@@ -22,7 +22,7 @@ export default function AddBooks({ id }: AddBooksProps) {
 
   async function AddBook() {
     const user = getCookie("id");
-    const bookId = setCookie("bookId", id);
+    setCookie("bookId", id);
     const response = await fetch("/api/shelf", {
       method: "POST",
       headers: {
@@ -45,6 +45,7 @@ export default function AddBooks({ id }: AddBooksProps) {
   }
 
   async function RemoveBook() {
+    setCookie("bookId", id);
     const response = await fetch("/api/delete-book", {
       method: "DELETE",
       headers: {

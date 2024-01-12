@@ -37,14 +37,14 @@ export async function generateMetadata(
   };
 }
 
-export default async function Shelf({ searchParams }: { searchParams: { id: number } }) {
+export default async function Read({ searchParams }: { searchParams: { id: number } }) {
 
   let { data: book } = await supabase
   .from("books")
   .select("title")
   .eq("id", searchParams.id);
 
-if (!book || book.length === 0) {
+if (!book || book?.length === 0) {
   return (
     <div className="mx-2 md:mx-12 text-center mt-[8em] text-3xl">
       Book not found
