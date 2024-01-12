@@ -42,7 +42,7 @@ export default function Reader() {
       </div>
     );
 
-  if (data.data.length === 0)
+  if (data && data.data && data.data.length === 0)
     return (
       <div className="mx-2 md:mx-12 text-center mt-[8em] text-3xl">
         Book not found.
