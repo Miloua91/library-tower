@@ -3,23 +3,26 @@
 import useLocalStorageState from "use-local-storage-state";
 import { ReactReader } from "react-reader";
 
-type Title = {
+type Data = {
     bookTitle: string | null;
-  };
+    bookLink: string | null;
+}
 
-export default function Reader(bookTitle: Title) {
+export default function Reader(book: Data) {
   const [location, setLocation] = useLocalStorageState<string | number>(
-    "persist-location",
+    `${book.bookTitle}`,
     {
       defaultValue: 0,
     }
   );
 
+  console.log(location)
+
   return (
     <div style={{ height: "100vh" }} className="md:mx-12">
       <ReactReader
-        url="https://izfdjscvmavogprtzufx.supabase.co/storage/v1/object/public/library/Metamorphosis_Kafka.epub"
-        title={`${bookTitle.bookTitle}`}
+        url={book.bookLink ?? ""}
+        title={book.bookTitle ?? ""}
         location={location}
         locationChanged={(loc: string) => setLocation(loc)}
       />

@@ -41,7 +41,7 @@ export default async function Read({ params }: { params: { id: number } }) {
 
   let { data: book } = await supabase
   .from("books")
-  .select("title")
+  .select("title, link")
   .eq("id", params.id);
 
 if (!book || book?.length === 0) {
@@ -52,7 +52,7 @@ if (!book || book?.length === 0) {
   );
 }
 
-const { title } = book[0];
+const { title, link } = book[0];
 
- return <Reader bookTitle={title}/>
+ return <Reader bookTitle={title} bookLink={link} />
 }
