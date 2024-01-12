@@ -18,12 +18,12 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = searchParams.id;
+  const id = params.id;
 
   let { data: book } = await supabase
     .from("books")
     .select("*, author(name)")
-    .eq("id", `${id}`);
+    .eq("id", id);
 
   if (!book || book.length === 0) {
     return {
@@ -37,12 +37,12 @@ export async function generateMetadata(
   };
 }
 
-export default async function Read({ searchParams }: { searchParams: { id: string } }) {
+export default async function Read({ params }: { params: { id: number } }) {
 
   let { data: book } = await supabase
   .from("books")
   .select("title")
-  .eq("id", searchParams.id);
+  .eq("id", params.id);
 
 if (!book || book?.length === 0) {
   return (

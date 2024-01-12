@@ -61,12 +61,10 @@ export default async function Book({ params }: { params: { id: number } }) {
         <div className="lg:flex lg:flex-col-reverse">
           <div className="flex justify-around mt-4">
             <div className="flex flex-col items-center">
-              <Link
-                href={{
-                  pathname: `/library/read/${title!.split(` `).join(`-`).toLowerCase()}`,
-                  query: { id: id },
-                }}
-              >
+            <Link href={{
+                  pathname: `/library/read/${id}`,
+                  query: { book: title },
+                }}>
                 <Image src={"/read.svg"} alt="Read" width={32} height={32} priority/>
                 <label>Read</label>
               </Link>
