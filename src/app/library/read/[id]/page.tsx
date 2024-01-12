@@ -8,6 +8,8 @@ import { useSearchParams } from "next/navigation";
 import Lottie from "lottie-react";
 import Loading from "../../../../../public/loading.json";
 
+export const dynamic = "force-dynamic";
+
 export default function Reader() {
   const searchParams = useSearchParams();
   const [bookTitle, setBookTitle] = useState<string>();
