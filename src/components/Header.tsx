@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import classNames from "classnames";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
@@ -22,6 +23,8 @@ export default function Header() {
   const [opened, setOpened] = useState(false);
   const [bookworm, setBookworm] = useState("Join");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const router = useRouter();
+  const path = usePathname();
 
   async function Sub(event: React.FormEvent<HTMLFormElement>) {
     const uid = uuidv4();
@@ -71,6 +74,7 @@ export default function Header() {
       setCookie("id", id);
       toast.success("Welcome back!");
       setBookworm(`${user}`);
+      router.replace("/");
     } else if (user.length === 0) {
       toast.error("Please enter a username.");
     } else {
@@ -92,6 +96,7 @@ export default function Header() {
     deleteCookie("loggedIn");
     setBookworm(`Join`);
     setUser("");
+    router.replace("/");
   }
 
   useEffect(() => {
@@ -117,13 +122,19 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <div className="lg:hidden">
             <Link href="/" className="text-5xl">
-              <Image src="/icon.svg" alt="LT" width={64} height={64} priority/>
+              <Image src="/icon.svg" alt="LT" width={64} height={64} priority />
             </Link>
           </div>
           <div className="hidden lg:flex gap-10 text-xl text-gray-600 items-center">
             <div>
               <Link href="/" className="text-5xl hover:opacity-80">
-                <Image src="/icon.svg" alt="LT" width={64} height={64} priority/>
+                <Image
+                  src="/icon.svg"
+                  alt="LT"
+                  width={64}
+                  height={64}
+                  priority
+                />
               </Link>
             </div>
             <Link className="text-black hover:text-gray-600" href="/library">

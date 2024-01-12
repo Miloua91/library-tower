@@ -1,6 +1,5 @@
 "use client";
 import { setCookie, getCookie } from "cookies-next";
-import { useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -89,7 +88,7 @@ export default function AddBooks({ id }: AddBooksProps) {
       </>
     );
 
-  if (data.data.map((book: Book) => book.book.id).includes(id))
+  if (data?.data?.map((book: Book) => book.book.id).includes(id))
     return (
       <>
         <div className="flex flex-col items-center">

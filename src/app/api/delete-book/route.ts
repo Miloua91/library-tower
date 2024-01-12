@@ -21,8 +21,7 @@ export async function DELETE(req: NextRequest) {
     const { data, error } = await supabase
       .from("shelf")
       .delete()
-      .eq("book", id)
-      .eq("bookworm", bookworm.value)
+      .eq("id", `${id}-${bookworm.value}`);
     return NextResponse.json({ data, error});
   } catch (err) {
     return NextResponse.json({ err });

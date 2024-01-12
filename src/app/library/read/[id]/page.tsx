@@ -25,7 +25,7 @@ export default function Reader() {
   const { data, error, isLoading } = useSWR(`/api/book?id=${id}`, fetcher);
 
   useEffect(() => {
-    if (data && Array.isArray(data.data) && data.data.length > 0) {
+    if (data?.data?.length > 0) {
       setBookTitle(data.data[0].title);
     }
   }, [data]);
@@ -42,7 +42,7 @@ export default function Reader() {
       </div>
     );
 
-  if (data && data.data && data.data.length === 0)
+  if (data?.data?.length === 0)
     return (
       <div className="mx-2 md:mx-12 text-center mt-[8em] text-3xl">
         Book not found.
