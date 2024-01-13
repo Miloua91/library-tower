@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       .from("books")
       .select("id, title, author(name)")
       .range(from, to);
-    return NextResponse.json({ data: books, error, from, to });
+    return NextResponse.json({ data: books, error });
   } catch (err) {
     return NextResponse.json({ err });
   }
