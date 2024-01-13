@@ -14,7 +14,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
+import Search from "@/components/Search";
 const bwipjs = require("bwip-js");
 const { v4: uuidv4 } = require("uuid");
 
@@ -122,7 +124,14 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <div className="lg:hidden">
             <Link href="/" className="text-5xl">
-              <Image src="/icon.svg" alt="LT" width={64} height={64} priority />
+              <Image
+                src="/icon.svg"
+                alt="LT"
+                className="my-1"
+                width={48}
+                height={48}
+                priority
+              />
             </Link>
           </div>
           <div className="hidden lg:flex gap-10 text-xl text-gray-600 items-center">
@@ -131,13 +140,14 @@ export default function Header() {
                 <Image
                   src="/icon.svg"
                   alt="LT"
-                  width={64}
-                  height={64}
+                  className="my-1"
+                  width={48}
+                  height={48}
                   priority
                 />
               </Link>
             </div>
-            <Link className="text-black hover:text-gray-600" href="/library">
+            <Link className="text-black hover:text-gray-600" href="/library?shelf=1">
               Library
             </Link>
             <Link className="text-black hover:text-gray-600" href="/shelf">
@@ -145,30 +155,28 @@ export default function Header() {
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <div className="relative">
+            <div className="relative flex items-center">
               <Dialog>
                 <DialogTrigger>
                   <input
-                    className="border h-6 px-2 rounded-full text-gl w-[5em] transition-all duration-300 mr-1 outline-none"
+                    className="border h-7 px-2 rounded text-gl w-[5em] transition-all duration-300 mr-1 outline-none"
                     type="text"
                     placeholder="Search"
                   />
                 </DialogTrigger>
                 <DialogContent>
-                  <DialogTitle>Search Books!</DialogTitle>
-                  <DialogDescription>
-                    <input
-                      className="h-10 px-4 rounded-full text-xl w-full transition-all duration-300 mr-1"
-                      type="search"
-                      name="search"
-                      placeholder="Search"
-                    />
-                  </DialogDescription>
+                  <Search />
                 </DialogContent>
               </Dialog>
               <Dialog>
                 <DialogTrigger onClick={() => setDialogOpen(true)}>
-                  {loggedIn || userId ? `${bookworm}` : "Join"}
+                  {loggedIn || userId ? (
+                    `${bookworm}`
+                  ) : (
+                    <div className="h-7 bg-white hover:bg-yellow-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow">
+                      Join
+                    </div>
+                  )}
                 </DialogTrigger>
                 {loggedIn || userId ? (
                   <DialogContent>
@@ -189,12 +197,12 @@ export default function Header() {
                       <div className="flex justify-center my-4">
                         <canvas id="mycanvas"></canvas>
                       </div>
-                      <button
+                      <DialogClose
                         className="ht-10 bg-white hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
                         onClick={() => Logout()}
                       >
                         Logout
-                      </button>
+                      </DialogClose>
                     </DialogTitle>
                   </DialogContent>
                 ) : (
@@ -211,6 +219,7 @@ export default function Header() {
                         name="username"
                         placeholder="type a username"
                         onChange={(e) => setUser(e.target.value)}
+                        required
                       />
                       <button
                         className="h-10 bg-white hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -244,10 +253,10 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <hr className="border-gray-700" />
+      <hr className="relative border-gray-950 border-t-2 top-[2px]" />
       {opened && (
         <div className="flex justify-evenly lg:hidden">
-          <Link href="/library" className="text-xl text-black block py-2">
+          <Link href="/library?shelf=1" className="text-xl text-black block py-2">
             Library
           </Link>
           <Link href="/shelf" className="text-xl text-black block py-2">
@@ -255,7 +264,7 @@ export default function Header() {
           </Link>
         </div>
       )}
-      <hr className="border-gray-700" />
+      <hr className="border-gray-950 border-t-2" />
     </div>
   );
 }

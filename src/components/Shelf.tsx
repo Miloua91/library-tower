@@ -41,9 +41,10 @@ export default function Shelfs() {
       </div>
     );
 
+
   return (
     <div className="mx-2 md:mx-12">
-      <h1 className="text-center mt-10 text-xl mb-10">SHELF I</h1>
+      <h1 className="text-center mt-10 text-xl mb-10">YOUR SHELF</h1>
       <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-12 justify-items-center">
         {data.data.map((shelf: Books) => (
           <div

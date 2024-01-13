@@ -14,10 +14,7 @@ const APP_DESCRIPTION = "Read public domain books.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
-  title: {
-    default: APP_DEFAULT_TITLE,
-    template: APP_TITLE_TEMPLATE,
-  },
+  title: APP_DEFAULT_TITLE,
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
   appleWebApp: {
@@ -29,7 +26,7 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-  openGraph: {
+ /* openGraph: {
     type: "website",
     siteName: APP_NAME,
     title: {
@@ -45,7 +42,7 @@ export const metadata: Metadata = {
       template: APP_TITLE_TEMPLATE,
     },
     description: APP_DESCRIPTION,
-  },
+  },*/
 };
 
 export const viewport: Viewport = {

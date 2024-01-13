@@ -55,7 +55,7 @@ export default async function Book({ params }: { params: { id: number } }) {
 
   return (
     <div className="mx-2 md:mx-12 flex flex-col-reverse items-center text-center mt-8 lg:flex-row lg:text-start lg:my-10">
-      <div>
+      <div className="lg:w-[320em]">
         <h1 className="text-2xl lg:text-4xl">{title}</h1>
         <p>{author.name}</p>
         <div className="lg:flex lg:flex-col-reverse">
@@ -75,13 +75,13 @@ export default async function Book({ params }: { params: { id: number } }) {
           <p className="text-start lg:mt-10">{description}</p>
         </div>
       </div>
-      <div className="relative lg:mx-20">
-        <div className="absolute flex flex-col gap-32 text-center text-yellow-200 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+      <div className="relative lg:mx-20 lg:w-[140em] 2xl:w-[80em]">
+        <div className="absolute w-[10em] flex flex-col gap-32 text-center text-yellow-200 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
           <div className="text-2xl lg:text-xl">{title}</div>{" "}
           <div className="text-xl">{author.name}</div>
         </div>
         <Image
-          className="bg-gray-950 w-72 lg:w-[130em] xl:w-[100em] 2xl:w-[60em]"
+          className="bg-gray-950 w-72 lg:w-[140em]"
           src="/cover.svg"
           alt="Book cover"
           width={520}
