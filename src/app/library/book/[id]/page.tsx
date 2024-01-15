@@ -16,6 +16,8 @@ const supabaseKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
 const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
+export const revalidate = 3600;
+
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata

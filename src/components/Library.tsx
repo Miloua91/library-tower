@@ -82,7 +82,7 @@ export default function LibraryShelf({route}: Route) {
     <div className="mx-2 md:mx-12">
       <h1 className="text-center mt-10 text-xl mb-10">SHELF {romanNumber}</h1>
       <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-12 justify-items-center">
-        {data?.data?.sort((a: Books, b: Books) => b.id - a.id)?.map((book: Books) => (
+        {data?.data?.sort(route === "popular" ? () => 0:((a: Books, b: Books) => a.id - b.id))?.map((book: Books) => (
           <div
             key={book.id}
             className="relative bg-gray-950 w-20 h-96 px-5 mb-5 cursor-pointer hover:bg-gray-900 group"
