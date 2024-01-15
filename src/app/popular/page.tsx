@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import type { Metadata, ResolvingMetadata } from "next";
-import LibraryShelf from "@/components/Library";
+import LibararyShelf from "@/components/Library";
 
 type Props = {
   params: { id: string };
@@ -46,10 +46,10 @@ export async function generateMetadata(
   const romanNumber = convertToRomanNumber(id);
 
   return {
-    title: `Shelf ${romanNumber} - Library | Library Tower`,
+    title: `Shelf ${romanNumber} - Popular | Library Tower`,
   };
 }
 
-export default async function Library() {
-  return <LibraryShelf route="library" />;
+export default async function Popular() {
+  return <LibararyShelf route="popular" />;
 }

@@ -16,7 +16,7 @@ interface Book {
 export default function AddBooks({ id }: AddBooksProps) {
   const fetcher = (...args: [RequestInfo, RequestInit?]) =>
     fetch(...args).then((res) => res.json());
-  const { data, error, isLoading, mutate } = useSWR(`/api/user-shelf`, fetcher);
+  const { data, error, isLoading, mutate } = useSWR('/api/user-shelf', fetcher);
 
   const user = getCookie("id");
 
@@ -80,11 +80,12 @@ export default function AddBooks({ id }: AddBooksProps) {
             className="cursor-pointer"
             src={"/shelf.svg"}
             alt="Shelf"
+            onClick={() => toast.info("You need to join to add books to your shelf.")}
             width={32}
             height={32}
             priority
           />
-          <label>Join</label>
+          <label>Add to shelf</label>
         </div>
       </>
     );

@@ -33,8 +33,10 @@ export interface Database {
           created_at: string
           description: string | null
           id: number
+          isFiction: boolean | null
           language: string | null
           link: string | null
+          read: number | null
           title: string | null
           year: number | null
         }
@@ -43,8 +45,10 @@ export interface Database {
           created_at?: string
           description?: string | null
           id?: number
+          isFiction?: boolean | null
           language?: string | null
           link?: string | null
+          read?: number | null
           title?: string | null
           year?: number | null
         }
@@ -53,8 +57,10 @@ export interface Database {
           created_at?: string
           description?: string | null
           id?: number
+          isFiction?: boolean | null
           language?: string | null
           link?: string | null
+          read?: number | null
           title?: string | null
           year?: number | null
         }
@@ -97,7 +103,7 @@ export interface Database {
           book?: number | null
           bookworm?: string | null
           created_at?: string
-          id?: string
+          id: string
         }
         Update: {
           book?: number | null

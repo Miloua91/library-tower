@@ -23,7 +23,11 @@ interface Books {
   id: number;
 }
 
-export default function LibraryShelf() {
+interface Route {
+  route: string;
+}
+
+export default function LibraryShelf({route}: Route) {
   const searchParams = useSearchParams();
   const id = searchParams.get("shelf");
   const shelf: number = id !== null ? parseInt(id, 10) : 0;
@@ -31,7 +35,7 @@ export default function LibraryShelf() {
   const fetcher = (...args: [RequestInfo, RequestInit?]) =>
     fetch(...args).then((res) => res.json());
   const { data, error, isLoading } = useSWR(
-    `/api/library?shelf=${shelf}`,
+    `/api/${route}?shelf=${shelf}`,
     fetcher
   );
 
@@ -51,7 +55,7 @@ export default function LibraryShelf() {
     return (
       <ul className="flex flex-col items-center mx-2 md:mx-12 text-center justify-center mt-[8em] text-3xl">
         <h1>The shelf is empty.</h1>
-        <PaginationPrevious href={`/library?shelf=${shelf - 1}`} />
+        <PaginationPrevious href={`/${route}?shelf=${shelf - 1}`} />
       </ul>
     );
 
@@ -78,7 +82,7 @@ export default function LibraryShelf() {
     <div className="mx-2 md:mx-12">
       <h1 className="text-center mt-10 text-xl mb-10">SHELF {romanNumber}</h1>
       <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-12 justify-items-center">
-        {data?.data?.map((book: Books) => (
+        {data?.data?.sort((a: Books, b: Books) => b.id - a.id)?.map((book: Books) => (
           <div
             key={book.id}
             className="relative bg-gray-950 w-20 h-96 px-5 mb-5 cursor-pointer hover:bg-gray-900 group"
@@ -118,7 +122,7 @@ export default function LibraryShelf() {
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              href={`/library?shelf=${shelf - 1}`}
+              href={`/${route}?shelf=${shelf - 1}`}
               className={shelf <= 1 ? "pointer-events-none" : ""}
               aria-disabled={shelf <= 1}
               tabIndex={shelf <= 1 ? -1 : undefined}
@@ -126,7 +130,7 @@ export default function LibraryShelf() {
           </PaginationItem>
           <PaginationItem>
             <PaginationLink
-              href={`/library?shelf=${shelf === 1 ? shelf : shelf - 1}`}
+              href={`/${route}?shelf=${shelf === 1 ? shelf : shelf - 1}`}
               isActive={shelf === 1}
             >
               {shelf === 1 ? shelf : shelf - 1}
@@ -134,7 +138,7 @@ export default function LibraryShelf() {
           </PaginationItem>
           <PaginationItem>
             <PaginationLink
-              href={`/library?shelf=${shelf === 1 ? shelf + 1 : shelf}`}
+              href={`/${route}?shelf=${shelf === 1 ? shelf + 1 : shelf}`}
               isActive={shelf > 1}
             >
               {shelf === 1 ? shelf + 1 : shelf}
@@ -142,7 +146,7 @@ export default function LibraryShelf() {
           </PaginationItem>
           <PaginationItem>
             <PaginationLink
-              href={`/library?shelf=${shelf === 1 ? shelf + 2 : shelf + 1}`}
+              href={`/${route}?shelf=${shelf === 1 ? shelf + 2 : shelf + 1}`}
             >
               {shelf === 1 ? shelf + 2 : shelf + 1}
             </PaginationLink>
@@ -151,7 +155,7 @@ export default function LibraryShelf() {
             <PaginationEllipsis className={data?.data?.length < 12 ? "hidden" : ""}/>
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext href={`/library?shelf=${shelf + 1}`} />
+            <PaginationNext href={`/${route}?shelf=${shelf + 1}`} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

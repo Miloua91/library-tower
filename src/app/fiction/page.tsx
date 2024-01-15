@@ -51,5 +51,5 @@ export async function generateMetadata(
 }
 
 export default async function Library() {
-  return <LibraryShelf route="library" />;
+  return <LibraryShelf route="fiction" />;
 }

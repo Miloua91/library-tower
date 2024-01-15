@@ -4,6 +4,7 @@ import { Database } from "../../../../../database.types";
 import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import AddBooks from "@/components/AddBook";
+import ReadButton from "@/components/ReadButton";
 
 type Props = {
   params: { id: string };
@@ -60,19 +61,11 @@ export default async function Book({ params }: { params: { id: number } }) {
         <p>{author.name}</p>
         <div className="lg:flex lg:flex-col-reverse">
           <div className="flex justify-around mt-4">
-            <div className="flex flex-col items-center">
-            <Link href={{
-                  pathname: `/library/read/${id}`,
-                  query: { book: title },
-                }}>
-                <Image src={"/read.svg"} alt="Read" width={32} height={32} priority/>
-                <label>Read</label>
-              </Link>
-            </div>
+            <ReadButton id={id} title={title}/>
             <AddBooks id={id}/>
           </div>
           <hr className="my-2" />
-          <p className="text-start lg:mt-10">{description}</p>
+          <p className="text-start lg:mt-1">{description}</p>
         </div>
       </div>
       <div className="relative lg:mx-20 lg:w-[140em] 2xl:w-[80em]">

@@ -16,8 +16,6 @@ export default function Reader(book: Data) {
     }
   );
 
-  console.log(location)
-
   return (
     <div style={{ height: "100vh" }} className="md:mx-12">
       <ReactReader

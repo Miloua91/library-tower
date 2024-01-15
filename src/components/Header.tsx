@@ -27,6 +27,10 @@ export default function Header() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
   const path = usePathname();
+  
+  function handleJoin() {
+    setDialogOpen(true);
+  }
 
   async function Sub(event: React.FormEvent<HTMLFormElement>) {
     const uid = uuidv4();

@@ -7,15 +7,15 @@ const supabaseKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
 const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
+    const readingCount = await req.json();
   try {
-    const idParam: string | null = req.nextUrl.searchParams.get("id");
-    const id: number = idParam !== null ? parseInt(idParam, 10) : 0; 
-    let { data: books, error } = await supabase
+    const { data, error } = await supabase
       .from("books")
-      .select("id, title, link, read")
-      .eq("id", id);
-    return NextResponse.json({ data: books, error });
+      .update({ read: readingCount.updatedReadCount })
+      .eq("id", readingCount.id)
+      .select();
+    return NextResponse.json({ readingCount });
   } catch (err) {
     return NextResponse.json({ err });
   }

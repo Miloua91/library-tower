@@ -18,21 +18,21 @@ export default function Home() {
           </div>
         </div>
         <div className="absolute translate-y-96 lg:translate-y-24 w-full lg:w-96 h-96 right-0 bg-gray-100 rounded-xl">
-          <Link href="#">
+          <Link href="/popular?shelf=1">
             <div className="absolute bottom-2 cursor-pointer right-44 rotate-12 bg-gray-950 hover:bg-gray-900 h-3/4 w-16">
               <div className="text-xl translate-y-36 -rotate-90 text-yellow-200">
                 Popular
               </div>
             </div>
           </Link>
-          <Link href="#">
+          <Link href="/fiction?shelf=1">
             <div className="absolute bottom-2 cursor-pointer right-24 rotate-6 bg-gray-950 hover:bg-gray-900 h-3/4 w-16">
               <div className="text-xl translate-y-36 -rotate-90 text-yellow-200">
                 Fiction
               </div>
             </div>
           </Link>
-          <Link href="#">
+          <Link href="/nonefiction?shelf=1">
             <div className="absolute bottom-2 cursor-pointer right-4 bg-gray-950 hover:bg-gray-900 h-3/4 w-16">
               <div className="text-xl translate-y-36 -rotate-90 text-yellow-200">
                 Nonefiction
