@@ -39,6 +39,7 @@ export default function LibraryShelf({route}: Route) {
     fetcher
   );
 
+   
   if (isLoading)
     return (
       <div className="mx-2 md:mx-12 text-center">
@@ -50,6 +51,15 @@ export default function LibraryShelf({route}: Route) {
         <div className="-mt-20 text-xl">Loading...</div>
       </div>
     );
+
+if (shelf <= 0 || id == "")
+   return (
+      <ul className="flex flex-col items-center mx-2 md:mx-12 text-center justify-center mt-[8em] text-3xl">
+        <h1>The shelf you are looking for does not exist.</h1>
+        <a href={`/${route}?shelf=1`} className="flex items-center justify-center w-20 h-8 text-lg hover:bg-gray-100 rounded my-2">Go back</a>
+      </ul>
+    );
+
 
   if (data?.data?.length === 0)
     return (

@@ -37,8 +37,8 @@ export default function Header() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username");
-    setCookie("bookworm", username);
-    setCookie("id", uid);
+    setCookie("bookworm", username, {maxAge: 365 * 24 * 60 * 60 * 1000});
+    setCookie("id", uid, {maxAge: 365 * 24 * 60 * 60 * 1000});
 
     try {
       const response = await fetch("/api/bookworm", {
@@ -70,14 +70,14 @@ export default function Header() {
   }
 
   async function Login() {
-    setCookie("bookworm", user);
+    setCookie("bookworm", user, {maxAge: 365 * 24 * 60 * 60 * 1000});
     const response = await fetch("/api/login");
     const worm = await response.json();
 
     if (worm.data.length !== 0) {
       const id = worm.data[0].id;
-      setCookie("loggedIn", id);
-      setCookie("id", id);
+      setCookie("loggedIn", id, {maxAge: 365 * 24 * 60 * 60 * 1000});
+      setCookie("id", id, {maxAge: 365 * 24 * 60 * 60 * 1000});
       toast.success("Welcome back!");
       setBookworm(`${user}`);
       router.replace("/");
@@ -88,9 +88,9 @@ export default function Header() {
     }
   }
 
-  const loggedIn = getCookie("loggedIn");
-  const userId = getCookie("id");
-  const name = getCookie("bookworm");
+  const loggedIn = getCookie("loggedIn", {maxAge: 365 * 24 * 60 * 60 * 1000});
+  const userId = getCookie("id", {maxAge: 365 * 24 * 60 * 60 * 1000});
+  const name = getCookie("bookworm", {maxAge: 365 * 24 * 60 * 60 * 1000});
 
   useEffect(() => {
     setBookworm(`${name}`);
