@@ -24,8 +24,7 @@ export async function POST(req: NextRequest) {
       account: `${user.value}`,
     });
 
-    console.log(newSecret);
-
+   
     const { data: bookworm, error } = await supabase
       .from("bookworm")
       .insert([
