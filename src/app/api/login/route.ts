@@ -25,10 +25,13 @@ export async function GET(req: NextRequest) {
   try {
     let { data: bookworm, error } = await supabase
       .from("bookworm")
-      .select("id, username, secret")
+      .select("id, username, secret, uri")
       .eq("username", `${user.value}`);
 
-    const isValidToken = twofactor.verifyToken(bookworm[0].secret, token.value);
+    const isValidToken = twofactor.verifyToken(
+      bookworm?.[0]?.secret ?? "",
+      token.value,
+    );
     if (isValidToken.delta === 0)
       return NextResponse.json({
         data: bookworm,
