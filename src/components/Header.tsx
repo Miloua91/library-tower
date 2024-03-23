@@ -83,6 +83,11 @@ export default function Header() {
     const response = await fetch("/api/login");
     const worm = await response.json();
 
+    if (user === "") return toast.info("Please enter your username to login.");
+    if (value === "") return toast.info("Please enter your OTP to login.");
+    if (worm.err) return toast.warning("You entered a wrong OTP.");
+    if (worm.expired) return toast.warning("The OTP you entered has expired.");
+
     if (worm.data.length !== 0) {
       const id = worm.data[0]?.id;
       const secret = worm.data[0]?.secret;
@@ -123,6 +128,7 @@ export default function Header() {
     deleteCookie("userIn");
     setBookworm(`Join`);
     setUser("");
+    setValue("");
     router.replace("/");
   }
 
@@ -225,7 +231,7 @@ export default function Header() {
                       <div className="flex flex-col mx-4 space-y-2">
                         <p className="text-lg font-light">
                           Scan the QR code below using a supported authenticator
-                          app.
+                          app to login next time.
                         </p>
                         <canvas
                           className="w-36 m-auto border p-2 rounded"
