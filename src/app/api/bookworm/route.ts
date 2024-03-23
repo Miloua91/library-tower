@@ -24,6 +24,8 @@ export async function POST(req: NextRequest) {
       account: `${user.value}`,
     });
 
+    console.log(newSecret);
+
     const { data: bookworm, error } = await supabase
       .from("bookworm")
       .insert([
@@ -31,6 +33,7 @@ export async function POST(req: NextRequest) {
           id: `${id.value}`,
           username: `${user.value}`,
           secret: newSecret.secret,
+          uri: newSecret.uri,
         },
       ])
       .select("id, username");
