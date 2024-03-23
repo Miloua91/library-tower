@@ -4,6 +4,7 @@ import "tailwindcss/tailwind.css";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Header from "@/components/Header";
+import { Analytics } from "@vercel/analytics/react";
 
 const font = EB_Garamond({ subsets: ["latin"] });
 
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
- /* openGraph: {
+  /* openGraph: {
     type: "website",
     siteName: APP_NAME,
     title: {
@@ -60,6 +61,7 @@ export default function RootLayout({
         <Header />
         <Toaster position="bottom-center" />
         {children}
+        <Analytics />
       </body>
     </html>
   );

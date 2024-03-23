@@ -3,19 +3,23 @@
 import { useState, useEffect } from "react";
 import classNames from "classnames";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import Search from "@/components/Search";
 const bwipjs = require("bwip-js");
 const { v4: uuidv4 } = require("uuid");
@@ -25,20 +29,16 @@ export default function Header() {
   const [opened, setOpened] = useState(false);
   const [bookworm, setBookworm] = useState("Join");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [value, setValue] = useState("");
   const router = useRouter();
-  const path = usePathname();
-  
-  function handleJoin() {
-    setDialogOpen(true);
-  }
 
   async function Sub(event: React.FormEvent<HTMLFormElement>) {
     const uid = uuidv4();
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username");
-    setCookie("bookworm", username, {maxAge: 365 * 24 * 60 * 60 * 1000});
-    setCookie("id", uid, {maxAge: 365 * 24 * 60 * 60 * 1000});
+    setCookie("bookworm", username, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+    setCookie("id", uid, { maxAge: 365 * 24 * 60 * 60 * 1000 });
 
     try {
       const response = await fetch("/api/bookworm", {
@@ -51,6 +51,9 @@ export default function Header() {
 
       const res = await response.json();
 
+      const resLog = await fetch("/api/2fa");
+      const worm = await resLog.json();
+
       if (res.error) {
         const duplicate = res.error.code || "";
 
@@ -62,6 +65,11 @@ export default function Header() {
       } else {
         toast.success("Welcome to library tower!");
         setBookworm(`${username}`);
+        setCookie("userIn", true);
+        const secret = worm.data[0]?.secret;
+        const uri = worm.data[0]?.uri;
+        setCookie("secret", secret, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+        setCookie("uri", uri, { maxAge: 365 * 24 * 60 * 60 * 1000 });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -70,17 +78,24 @@ export default function Header() {
   }
 
   async function Login() {
-    setCookie("bookworm", user, {maxAge: 365 * 24 * 60 * 60 * 1000});
+    setCookie("bookworm", user, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+    setCookie("otp", value);
     const response = await fetch("/api/login");
     const worm = await response.json();
 
     if (worm.data.length !== 0) {
-      const id = worm.data[0].id;
-      setCookie("loggedIn", id, {maxAge: 365 * 24 * 60 * 60 * 1000});
-      setCookie("id", id, {maxAge: 365 * 24 * 60 * 60 * 1000});
+      const id = worm.data[0]?.id;
+      const secret = worm.data[0]?.secret;
+      const uri = worm.data[0]?.uri;
+      console.log(uri);
+      setCookie("secret", secret, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+      setCookie("uri", uri, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+      setCookie("loggedIn", id, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+      setCookie("id", id, { maxAge: 365 * 24 * 60 * 60 * 1000 });
       toast.success("Welcome back!");
       setBookworm(`${user}`);
       router.replace("/");
+      setCookie("userIn", true);
     } else if (user.length === 0) {
       toast.error("Please enter a username.");
     } else {
@@ -88,9 +103,12 @@ export default function Header() {
     }
   }
 
-  const loggedIn = getCookie("loggedIn", {maxAge: 365 * 24 * 60 * 60 * 1000});
-  const userId = getCookie("id", {maxAge: 365 * 24 * 60 * 60 * 1000});
-  const name = getCookie("bookworm", {maxAge: 365 * 24 * 60 * 60 * 1000});
+  const loggedIn = getCookie("loggedIn", { maxAge: 365 * 24 * 60 * 60 * 1000 });
+  const userId = getCookie("id", { maxAge: 365 * 24 * 60 * 60 * 1000 });
+  const name = getCookie("bookworm", { maxAge: 365 * 24 * 60 * 60 * 1000 });
+  const uri = getCookie("uri", { maxAge: 365 * 24 * 60 * 60 * 1000 });
+  const secret = getCookie("secret", { maxAge: 365 * 24 * 60 * 60 * 1000 });
+  const userIn = getCookie("userIn", { maxAge: 365 * 24 * 60 * 60 * 1000 });
 
   useEffect(() => {
     setBookworm(`${name}`);
@@ -100,6 +118,9 @@ export default function Header() {
     deleteCookie("id");
     deleteCookie("bookworm");
     deleteCookie("loggedIn");
+    deleteCookie("secret");
+    deleteCookie("uri");
+    deleteCookie("userIn");
     setBookworm(`Join`);
     setUser("");
     router.replace("/");
@@ -109,10 +130,10 @@ export default function Header() {
     try {
       // The return value is the canvas element
       let canvas = bwipjs.toCanvas("mycanvas", {
-        bcid: "codablockf", // Barcode type
-        text: `${loggedIn}`, // Text to encode
+        bcid: "qrcode", // Barcode type
+        text: `${uri}`, // Text to encode
         scale: 2, // 3x scaling factor
-        height: 10, // Bar height, in millimeters
+        height: 24, // Bar height, in millimeters
         includetext: true, // Show human-readable text
         textxalign: "center", // Always good to set this
       });
@@ -151,7 +172,10 @@ export default function Header() {
                 />
               </Link>
             </div>
-            <Link className="text-black hover:text-gray-600" href="/library?shelf=1">
+            <Link
+              className="text-black hover:text-gray-600"
+              href="/library?shelf=1"
+            >
               Library
             </Link>
             <Link className="text-black hover:text-gray-600" href="/shelf">
@@ -174,7 +198,7 @@ export default function Header() {
               </Dialog>
               <Dialog>
                 <DialogTrigger onClick={() => setDialogOpen(true)}>
-                  {loggedIn || userId ? (
+                  {(loggedIn || userId) && userIn ? (
                     `${bookworm}`
                   ) : (
                     <div className="h-7 bg-white hover:bg-yellow-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow">
@@ -182,11 +206,11 @@ export default function Header() {
                     </div>
                   )}
                 </DialogTrigger>
-                {loggedIn || userId ? (
+                {(loggedIn || userId) && userIn ? (
                   <DialogContent>
                     <DialogTitle className="text-xl flex flex-col">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center">
+                        <div className="gap-1 flex items-center">
                           <Image
                             src="/icon.svg"
                             alt="LT"
@@ -198,11 +222,25 @@ export default function Header() {
                         </div>
                         <p>{bookworm}</p>
                       </div>
-                      <div className="flex justify-center my-4">
-                        <canvas id="mycanvas"></canvas>
+                      <div className="flex flex-col mx-4 space-y-2">
+                        <p className="text-lg font-light">
+                          Scan the QR code below using a supported authenticator
+                          app.
+                        </p>
+                        <canvas
+                          className="w-36 m-auto border p-2 rounded"
+                          id="mycanvas"
+                        ></canvas>
+                        <p className="text-lg font-light">
+                          Can&apos;t scan the QR code? Enter this code into your
+                          authenticator app instead:
+                        </p>
+                        <p className="text-sm font-semibold text-center">
+                          {secret}
+                        </p>
                       </div>
                       <DialogClose
-                        className="ht-10 bg-white hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                        className="h-10 bg-white hover:bg-yellow-100 text-gray-800 font-semibold px-4 mt-2 border border-gray-400 rounded shadow"
                         onClick={() => Logout()}
                       >
                         Logout
@@ -233,13 +271,41 @@ export default function Header() {
                       </button>
                     </form>
                     <label>Already registred?</label>
-                    <button
-                      className="bg-white hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-                      type="submit"
-                      onClick={() => Login()}
-                    >
-                      Login
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-between flex-wrap m-auto sm:m-0">
+                      <div className="flex flex-col gap-1">
+                        <InputOTP
+                          maxLength={6}
+                          value={value}
+                          onChange={(value) => setValue(value)}
+                        >
+                          <InputOTPGroup>
+                            <InputOTPSlot index={0} />
+                            <InputOTPSlot index={1} />
+                            <InputOTPSlot index={2} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={3} />
+                            <InputOTPSlot index={4} />
+                            <InputOTPSlot index={5} />
+                          </InputOTPGroup>
+                        </InputOTP>
+                        <div className="text-sm">
+                          {value === "" ? (
+                            <>Enter your one-time password to login.</>
+                          ) : (
+                            <>You entered: {value}</>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        className="h-10 bg-white m-auto w-full sm:w-auto sm:m-0 hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                        type="submit"
+                        onClick={() => Login()}
+                      >
+                        Login
+                      </button>
+                    </div>
                   </DialogContent>
                 )}
               </Dialog>
@@ -260,7 +326,10 @@ export default function Header() {
       <hr className="relative border-gray-950 border-t-2 top-[2px]" />
       {opened && (
         <div className="flex justify-evenly lg:hidden">
-          <Link href="/library?shelf=1" className="text-xl text-black block py-2">
+          <Link
+            href="/library?shelf=1"
+            className="text-xl text-black block py-2"
+          >
             Library
           </Link>
           <Link href="/shelf" className="text-xl text-black block py-2">
