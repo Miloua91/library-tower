@@ -33,6 +33,18 @@ export default function Header() {
   const [value, setValue] = useState("");
   const router = useRouter();
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setOpened(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   async function Sub(event: React.FormEvent<HTMLFormElement>) {
     const uid = uuidv4();
     event.preventDefault();
@@ -152,7 +164,7 @@ export default function Header() {
       // `e` may be a string or Error object
     }
     setDialogOpen(false);
-  }, [dialogOpen, loggedIn, userId, uri]);
+  }, [dialogOpen, loggedIn, userId, uri, userIn]);
 
   return (
     <div className="mx-2 md:mx-12">
@@ -245,11 +257,11 @@ export default function Header() {
                         <p className="text-lg font-light w-full">
                           Can&apos;t scan the QR code? Enter this code into your
                           authenticator app instead:{" "}
-                          <span className="text-sm font-semibold text-right mx-4">
+                          <span className="text-sm font-semibold sm:mx-4 flex justify-evenly sm:inline-flex break-all text-left">
                             {secret}
                             <ClipboardDocumentIcon
                               onClick={() => CopyToClip()}
-                              className="w-5 inline-block mb-2 ml-4 cursor-pointer"
+                              className="w-5 inline-block mb-2 sm:ml-4 cursor-pointer"
                             />
                           </span>
                         </p>
@@ -313,13 +325,13 @@ export default function Header() {
                           )}
                         </div>
                       </div>
-                      <button
+                      <DialogClose
                         className="h-10 bg-white m-auto w-full sm:w-auto sm:m-0 hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
                         type="submit"
                         onClick={() => Login()}
                       >
                         Login
-                      </button>
+                      </DialogClose>
                     </div>
                   </DialogContent>
                 )}
@@ -342,7 +354,7 @@ export default function Header() {
       <div
         className={`flex justify-evenly transform transition-all ${
           !opened
-            ? "-translate-y-4 opacity-0 ease-out pointer-events-none"
+            ? "-translate-y-4 opacity-0 ease-out pointer-events-none -mb-10"
             : "translate-y-0 opacity-100"
         }`}
       >
@@ -356,7 +368,7 @@ export default function Header() {
       <hr
         className={`border-gray-950 border-t-2 flex justify-evenly transform transition-all ${
           !opened
-            ? "-translate-y-10 opacity-0 ease-out pointer-events-none"
+            ? "-translate-y-2 delay-75 opacity-0 ease-out pointer-events-none -mb-4"
             : "translate-y-0 opacity-100"
         }`}
       />
