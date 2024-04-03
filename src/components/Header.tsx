@@ -65,7 +65,7 @@ export default function Header() {
       } else {
         toast.success("Welcome to library tower!");
         setBookworm(`${username}`);
-        setCookie("userIn", true);
+        setCookie("userIn", true, { maxAge: 365 * 24 * 60 * 60 * 1000 });
         const secret = worm.data[0]?.secret;
         const uri = worm.data[0]?.uri;
         setCookie("secret", secret, { maxAge: 365 * 24 * 60 * 60 * 1000 });
@@ -92,7 +92,7 @@ export default function Header() {
       const id = worm.data[0]?.id;
       const secret = worm.data[0]?.secret;
       const uri = worm.data[0]?.uri;
-      console.log(uri);
+      setCookie("userIn", true, { maxAge: 365 * 24 * 60 * 60 * 1000 });
       setCookie("secret", secret, { maxAge: 365 * 24 * 60 * 60 * 1000 });
       setCookie("uri", uri, { maxAge: 365 * 24 * 60 * 60 * 1000 });
       setCookie("loggedIn", id, { maxAge: 365 * 24 * 60 * 60 * 1000 });
@@ -100,7 +100,6 @@ export default function Header() {
       toast.success("Welcome back!");
       setBookworm(`${user}`);
       router.replace("/");
-      setCookie("userIn", true);
     } else if (user.length === 0) {
       toast.error("Please enter a username.");
     } else {
