@@ -23,6 +23,7 @@ import {
 import Search from "@/components/Search";
 const bwipjs = require("bwip-js");
 const { v4: uuidv4 } = require("uuid");
+import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const [user, setUser] = useState("");
@@ -131,13 +132,18 @@ export default function Header() {
     router.replace("/");
   }
 
+  function CopyToClip() {
+    navigator.clipboard.writeText(`${secret}`);
+    toast.info("Code copied to clipboard");
+  }
+
   useEffect(() => {
     try {
       // The return value is the canvas element
       let canvas = bwipjs.toCanvas("mycanvas", {
         bcid: "qrcode", // Barcode type
         text: `${uri}`, // Text to encode
-        scale: 2, // 3x scaling factor
+        scale: 5, // 3x scaling factor
         height: 24, // Bar height, in millimeters
         includetext: true, // Show human-readable text
         textxalign: "center", // Always good to set this
@@ -146,7 +152,7 @@ export default function Header() {
       // `e` may be a string or Error object
     }
     setDialogOpen(false);
-  }, [dialogOpen, loggedIn, userId]);
+  }, [dialogOpen, loggedIn, userId, uri]);
 
   return (
     <div className="mx-2 md:mx-12">
@@ -233,15 +239,19 @@ export default function Header() {
                           app to login next time.
                         </p>
                         <canvas
-                          className="w-36 m-auto border p-2 rounded"
+                          className="w-[140px] h-[140px] m-auto border p-2 rounded"
                           id="mycanvas"
                         ></canvas>
-                        <p className="text-lg font-light">
+                        <p className="text-lg font-light w-full">
                           Can&apos;t scan the QR code? Enter this code into your
-                          authenticator app instead:
-                        </p>
-                        <p className="text-sm font-semibold text-center">
-                          {secret}
+                          authenticator app instead:{" "}
+                          <span className="text-sm font-semibold text-right mx-4">
+                            {secret}
+                            <ClipboardDocumentIcon
+                              onClick={() => CopyToClip()}
+                              className="w-5 inline-block mb-2 ml-4 cursor-pointer"
+                            />
+                          </span>
                         </p>
                       </div>
                       <DialogClose
@@ -329,20 +339,27 @@ export default function Header() {
         </div>
       </div>
       <hr className="relative border-gray-950 border-t-2 top-[2px]" />
-      {opened && (
-        <div className="flex justify-evenly lg:hidden">
-          <Link
-            href="/library?shelf=1"
-            className="text-xl text-black block py-2"
-          >
-            Library
-          </Link>
-          <Link href="/shelf" className="text-xl text-black block py-2">
-            Shelf
-          </Link>
-        </div>
-      )}
-      <hr className="border-gray-950 border-t-2" />
+      <div
+        className={`flex justify-evenly transform transition-all ${
+          !opened
+            ? "-translate-y-4 opacity-0 ease-out pointer-events-none"
+            : "translate-y-0 opacity-100"
+        }`}
+      >
+        <Link href="/library?shelf=1" className="text-xl text-black block py-2">
+          Library
+        </Link>
+        <Link href="/shelf" className="text-xl text-black block py-2">
+          Shelf
+        </Link>
+      </div>
+      <hr
+        className={`border-gray-950 border-t-2 flex justify-evenly transform transition-all ${
+          !opened
+            ? "-translate-y-10 opacity-0 ease-out pointer-events-none"
+            : "translate-y-0 opacity-100"
+        }`}
+      />
     </div>
   );
 }
