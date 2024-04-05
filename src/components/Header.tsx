@@ -368,7 +368,7 @@ export default function Header() {
       <hr
         className={`border-gray-950 border-t-2 flex justify-evenly transform transition-all ${
           !opened
-            ? "-translate-y-2 delay-75 opacity-0 ease-out pointer-events-none -mb-4"
+            ? "-translate-y-2 delay-75 opacity-0 ease-out pointer-events-none"
             : "translate-y-0 opacity-100"
         }`}
       />
