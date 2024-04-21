@@ -18,7 +18,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://library-tower.vercel.app)
 
-This is a portfolio project, i wanted to learn React, TypeScript and Tailwind.
+I made this portfolio project to learn React, TypeScript and Tailwind.
 
  * I built the library with Next.js and added type safety with TypeScript.
 
